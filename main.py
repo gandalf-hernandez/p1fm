@@ -19,28 +19,37 @@ import templates
 
 genres = ('Metal', 'Pop', 'Hip Hop', 'Alternative', 'R and B', 'Country',)
 
-class MainHandler(webapp2.RequestHandler):
+class MainMenuHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write(templates.menu % ''.join(
-            templates.option % (number, genre) for number, genre in enumerate(genres, start=1)
+        self.response.write(templates.en['main_menu'])
+
+class GenreMenuHandler(webapp2.RequestHandler):
+    def get(self):
+        template = templates.es if self.request.GET['Digits'] == '2' else templates.en
+        self.response.write(template['genre_menu'] % ''.join(
+            template['option'] % (number, genre) for number, genre in enumerate(genres, start=1)
             ))
 
-class PlayHandler(webapp2.RequestHandler):
+class RadioHandler(webapp2.RequestHandler):
     def get(self):
+        template = templates.es if self.request.GET['language'] == 'es' else templates.en
         digit = int(self.request.GET['Digits'])
 
-        if digit == 5:
-            self.response.write(templates.rickroll)
+        if digit == 4:
+            self.response.write(template['rickroll'])
             return
         try:
             with open('lyrics/%d' % digit) as f:
-                lyrics = ''.join(templates.say % line.strip() for line in f)
+                track = template['track'] % (
+                        f.next().strip(),
+                        ''.join(template['say'] % line.strip() for line in f),)
         except IOError:
-            self.response.write(lyrics_error)
+            self.response.write(template['error_try_later'])
             return
-        self.response.write(templates.radio % (genres[digit-1], lyrics,))
+        self.response.write(template['radio'] % (genres[digit-1], track,))
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),
-    ('/play', PlayHandler)
+    ('/', MainMenuHandler),
+    ('/genre_menu', GenreMenuHandler),
+    ('/radio', RadioHandler)
 ], debug=True)
