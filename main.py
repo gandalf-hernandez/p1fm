@@ -29,10 +29,30 @@ response = '''
 </Response>
 '''
 
+lyrics_template = '''
+<?xml version="1.0" encoding="UTF-8"?>
+    <Response>
+        <Say>
+        %s
+        </Say>
+    </Response>
+'''
+
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         self.response.write(response)
 
+
+class PlayHandler(webapp2.RequestHandler):
+    def get(self):
+        digit = 1
+
+        with open('lyrics/%d' % digit) as f:
+            lyrics = f.read()
+        self.response.write(lyrics_template % lyrics)
+
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('/play', PlayHandler)
 ], debug=True)
