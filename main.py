@@ -51,7 +51,14 @@ lyrics_error = '''<?xml version="1.0" encoding="UTF-8"?>
 </Response>
 '''
 
+rickroll = '''<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <Play loop="10">lyrics/rickroll.mp3</Play>
+</Response>
+'''
+
 genres = ['', 'metal', 'hip hop', 'pop', 'alternative', 'R&B', 'Country']
+
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -61,12 +68,17 @@ class MainHandler(webapp2.RequestHandler):
 class PlayHandler(webapp2.RequestHandler):
     def get(self):
         digit = int(self.request.GET['Digits'])
+
+        if digit == 5:
+            self.response.write(rickroll)
+            return
         try:
             with open('lyrics/%d' % digit) as f:
                 lyrics = f.read()
         except IOError:
             self.response.write(lyrics_error)
             return
+
         self.response.write(lyrics_template % (genres[digit], lyrics))
 
 app = webapp2.WSGIApplication([
