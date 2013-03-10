@@ -27,7 +27,7 @@ class MainHandler(webapp2.RequestHandler):
 
 class PlayHandler(webapp2.RequestHandler):
     def get(self):
-        digit = int(self.request.GET['digit'])
+        digit = int(self.request.GET['Digits'])
 
         if digit == 5:
             self.response.write(templates.rickroll)

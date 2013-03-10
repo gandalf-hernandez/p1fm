@@ -1,0 +1,8 @@
+response = '<?xml version="1.0" encoding="UTF-8"?><Response>%s</Response>'
+say = '<Say>%s</Say>'
+option = '<Say>Press %s for %s</Say>'
+now_playing = '<Say>Now playing %s</Say>'
+menu = response % '<Gather action="/play" method="GET">%s</Gather><Say>We didn\'t receive any input. Goodbye!</Say>'
+lyrics_error = response  % '<Say>Oops. Sorry.</Say>'
+radio = response % '<Say>Playing %s radio.</Say>%s' 
+rickroll = response % '<Play loop="10">https://dl.dropbox.com/u/11675551/rickroll.mp3</Play>'
