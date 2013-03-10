@@ -22,6 +22,11 @@ response = '''<?xml version="1.0" encoding="UTF-8"?>
     <Gather action="/play" method="GET">
         <Say>
             Press 1 for Metal
+            Press 2 for Hip Hop
+            Press 3 for Pop
+            Press 4 for Alternative
+            Press 5 for R&B
+            Press 6 for Country
         </Say>
     </Gather>
 <Say>We didn't receive any input. Goodbye!</Say>
@@ -31,6 +36,8 @@ response = '''<?xml version="1.0" encoding="UTF-8"?>
 lyrics_template = '''<?xml version="1.0" encoding="UTF-8"?>
 <Response>
     <Say>
+    Playing %s radio.
+
     %s
     </Say>
 </Response>
@@ -44,6 +51,7 @@ lyrics_error = '''<?xml version="1.0" encoding="UTF-8"?>
 </Response>
 '''
 
+genres = ['', 'metal', 'hip hop', 'pop', 'alternative', 'R&B', 'Country']
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -59,7 +67,7 @@ class PlayHandler(webapp2.RequestHandler):
         except IOError:
             self.response.write(lyrics_error)
             return
-        self.response.write(lyrics_template % lyrics)
+        self.response.write(lyrics_template % (genres[digit], lyrics))
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
