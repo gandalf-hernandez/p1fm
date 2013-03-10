@@ -15,71 +15,30 @@
 # limitations under the License.
 #
 import webapp2
+import templates
 
-
-response = '''<?xml version="1.0" encoding="UTF-8"?>
-<Response>
-    <Gather action="/play" method="GET">
-        <Say>
-            Press 1 for Metal
-            Press 2 for Hip Hop
-            Press 3 for Pop
-            Press 4 for Alternative
-            Press 5 for R and B
-            Press 6 for Country
-        </Say>
-    </Gather>
-<Say>We didn't receive any input. Goodbye!</Say>
-</Response>
-'''
-
-lyrics_template = '''<?xml version="1.0" encoding="UTF-8"?>
-<Response>
-    <Say>
-    Playing %s radio.
-
-    %s
-    </Say>
-</Response>
-'''
-
-lyrics_error = '''<?xml version="1.0" encoding="UTF-8"?>
-<Response>
-    <Say>
-       Oops. Sorry.
-    </Say>
-</Response>
-'''
-
-rickroll = '''<?xml version="1.0" encoding="UTF-8"?>
-<Response>
-    <Play loop="10">https://dl.dropbox.com/u/11675551/rickroll.mp3</Play>
-</Response>
-'''
-
-genres = ['', 'metal', 'hip hop', 'pop', 'alternative', 'R&B', 'Country']
-
+genres = ('Metal', 'Pop', 'Hip Hop', 'Alternative', 'R and B', 'Country',)
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write(response)
-
+        self.response.write(templates.menu % ''.join(
+            templates.option % (number, genre) for number, genre in enumerate(genres, start=1)
+            ))
 
 class PlayHandler(webapp2.RequestHandler):
     def get(self):
-        digit = int(self.request.GET['Digits'])
+        digit = int(self.request.GET['digit'])
 
         if digit == 5:
-            self.response.write(rickroll)
+            self.response.write(templates.rickroll)
             return
         try:
             with open('lyrics/%d' % digit) as f:
-                lyrics = f.read()
+                lyrics = ''.join(templates.say % line.strip() for line in f)
         except IOError:
             self.response.write(lyrics_error)
             return
-
-        self.response.write(lyrics_template % (genres[digit], lyrics))
+        self.response.write(templates.radio % (genres[digit-1], lyrics,))
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
