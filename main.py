@@ -17,25 +17,31 @@
 import webapp2
 
 
-response = '''
-<?xml version="1.0" encoding="UTF-8"?>
-    <Response>
-        <Gather action="/play" method="GET">
-            <Say>
-                Press 1 for Metal
-            </Say>
-        </Gather>
-    <Say>We didn't receive any input. Goodbye!</Say>
+response = '''<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <Gather action="/play" method="GET">
+        <Say>
+            Press 1 for Metal
+        </Say>
+    </Gather>
+<Say>We didn't receive any input. Goodbye!</Say>
 </Response>
 '''
 
-lyrics_template = '''
-<?xml version="1.0" encoding="UTF-8"?>
-    <Response>
-        <Say>
-        %s
-        </Say>
-    </Response>
+lyrics_template = '''<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <Say>
+    %s
+    </Say>
+</Response>
+'''
+
+lyrics_error = '''<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <Say>
+       Oops. Sorry.
+    </Say>
+</Response>
 '''
 
 
@@ -46,10 +52,13 @@ class MainHandler(webapp2.RequestHandler):
 
 class PlayHandler(webapp2.RequestHandler):
     def get(self):
-        digit = 1
-
-        with open('lyrics/%d' % digit) as f:
-            lyrics = f.read()
+        digit = int(self.request.GET['Digits'])
+        try:
+            with open('lyrics/%d' % digit) as f:
+                lyrics = f.read()
+        except IOError:
+            self.response.write(lyrics_error)
+            return
         self.response.write(lyrics_template % lyrics)
 
 app = webapp2.WSGIApplication([
