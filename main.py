@@ -25,7 +25,7 @@ response = '''<?xml version="1.0" encoding="UTF-8"?>
             Press 2 for Hip Hop
             Press 3 for Pop
             Press 4 for Alternative
-            Press 5 for R&B
+            Press 5 for R and B
             Press 6 for Country
         </Say>
     </Gather>
@@ -53,7 +53,7 @@ lyrics_error = '''<?xml version="1.0" encoding="UTF-8"?>
 
 rickroll = '''<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Play loop="10">lyrics/rickroll.mp3</Play>
+    <Play loop="10">https://dl.dropbox.com/u/11675551/rickroll.mp3</Play>
 </Response>
 '''
 
