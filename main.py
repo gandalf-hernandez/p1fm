@@ -32,7 +32,7 @@ class GenreMenuHandler(webapp2.RequestHandler):
 
 class RadioHandler(webapp2.RequestHandler):
     def get(self):
-        template = templates.es if self.request.GET['language'] == 'es' else templates.en
+        template = templates.es if self.request.GET.get('language') == 'es' else templates.en
         digit = int(self.request.GET['Digits'])
 
         if digit == 4:
