@@ -8,8 +8,8 @@ en = {
         'main_menu': response % '<Gather action="/genre_menu" method="GET"><Say voice="woman">Press 1 for English</Say><Say language="es">Oprima 2 para Espanol</Say></Gather>',
         'genre_menu': response % '<Gather action="/radio" method="GET">%s</Gather><Say>We didn\'t receive any input. Goodbye!</Say>',
         'error_try_later': response  % '<Say>Oops. Sorry, please try again later.</Say>',
-        'radio': response % '<Gather action="/play" method="GET"><Say>%s radio.</Say>%s</Gather>',
-        'rickroll': response % '<Gather action="/play" method="GET"><<Play loop="10">https://dl.dropbox.com/u/11675551/rickroll.mp3</Play></Gather>',
+        'radio': response % '<Gather action="/radio" method="GET"><Say>%s radio.</Say>%s</Gather>',
+        'rickroll': response % '<Gather action="/radio" method="GET"><<Play loop="10">https://dl.dropbox.com/u/11675551/rickroll.mp3</Play></Gather>',
 }
 es = {
         'say': '<Say language="es">%s</Say>',
